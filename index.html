@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tweet Generator | SIO India Campaign</title>
+    <meta name="description" content="Easily generate Twitter intent links for your social media campaigns. Split long text into multiple tweets with a single click.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <main class="container">
+        <header class="header">
+            <h1 class="title">Tweet <span class="accent">Generator</span></h1>
+            <p class="subtitle">Transform your campaign text into ready-to-post Twitter links instantly.</p>
+        </header>
+
+        <section class="input-section card">
+            <div class="card-header">
+                <label for="campaignText">Paste Campaign Text</label>
+                <span class="badge" id="postCount">0 Posts Found</span>
+            </div>
+            <textarea id="campaignText" placeholder="1. Post one text...&#10;2. Post two text...&#10;3. Post three text..." spellcheck="false"></textarea>
+            <div class="actions">
+                <button id="generateBtn" class="btn primary">Generate Links</button>
+                <div class="toggle-container">
+                    <input type="checkbox" id="shortenToggle">
+                    <label for="shortenToggle">Shorten with TinyURL</label>
+                </div>
+                <button id="clearBtn" class="btn secondary">Clear</button>
+            </div>
+        </section>
+
+        <section id="resultsSection" class="results-section" style="display: none;">
+            <div class="results-header">
+                <h2>Generated Links</h2>
+                <button id="copyAllBtn" class="btn outline small">Copy All Links</button>
+            </div>
+            <div id="linksList" class="links-list">
+                <!-- Links will be injected here -->
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2024 SIO India Campaign Tool. Built for impact.</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
