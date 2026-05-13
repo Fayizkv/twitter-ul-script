@@ -86,20 +86,35 @@ document.addEventListener('DOMContentLoaded', () => {
             .filter(Boolean);
     }
 
-    function renderLinks(posts) {
+    async function renderLinks(posts, shouldShorten = false) {
         linksList.innerHTML = '';
         
-        posts.forEach((post, index) => {
+        for (let i = 0; i < posts.length; i++) {
+            const post = posts[i];
             const cleanPost = post.replace(/\u200B/g, "").trim();
             const encoded = encodeURIComponent(cleanPost);
-            const url = `https://twitter.com/intent/tweet?text=${encoded}`;
+            let url = `https://twitter.com/intent/tweet?text=${encoded}`;
+
+            if (shouldShorten) {
+                try {
+                    // Note: TinyURL might have CORS restrictions in some browser environments
+                    const response = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(url)}`);
+                    if (response.ok) {
+                        const shortUrl = await response.text();
+                        url = shortUrl;
+                    }
+                } catch (e) {
+                    console.error('Shortening failed for post', i + 1, e);
+                    // Fallback to long URL if shortening fails
+                }
+            }
 
             const linkItem = document.createElement('div');
             linkItem.className = 'link-item';
             
             linkItem.innerHTML = `
                 <div class="link-content">
-                    <span class="link-index">#${index + 1}</span>
+                    <span class="link-index">#${i + 1}</span>
                     <span class="link-preview">${cleanPost}</span>
                 </div>
                 <div class="link-actions">
@@ -109,7 +124,12 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             
             linksList.appendChild(linkItem);
-        });
+            
+            // If shortening many links, add a small delay to avoid rate limits
+            if (shouldShorten && posts.length > 5) {
+                await new Promise(r => setTimeout(r, 100));
+            }
+        }
 
         // Add copy event listeners to individual buttons
         document.querySelectorAll('.copy-btn').forEach(btn => {
